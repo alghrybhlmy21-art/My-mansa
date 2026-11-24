@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>منصة كيريو التعليمية</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:system-ui;background:#f3f0ff;color:#222}
+header{background:#6d28d9;color:#fff;padding:16px;text-align:center}
+header h1{margin:0}header p{margin:4px 0 0;opacity:.9}
+.wrap{max-width:900px;margin:16px auto;padding:0 12px}
+.card{background:#fff;border-radius:16px;padding:18px;box-shadow:0 4px 16px #0001;margin-bottom:14px}
+input,select,button{width:100%;padding:12px;border-radius:10px;border:1px solid #ddd;font-size:16px;margin-top:8px}
+button{background:#7c3aed;color:#fff;border:0;cursor:pointer;font-weight:700}
+button:hover{background:#5b21b6}.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.ch{border:2px solid #ede9fe;border-radius:14px;padding:12px;cursor:pointer}.ch:hover{border-color:#7c3aed}
+.ch b{font-size:17px}.bar{height:10px;background:#eee;border-radius:99px;overflow:hidden;margin-top:8px}.bar i{display:block;height:100%;background:#22c55e}
+.hidden{display:none}.q{margin:12px 0}.opt{display:block;background:#f8f7ff;border:1px solid #ddd;border-radius:10px;padding:10px;margin-top:6px;cursor:pointer}
+.opt:hover{border-color:#7c3aed}.ok{background:#dcfce7!important}.bad{background:#fee2e2!important}
+@media(max-width:600px){.grid{grid-template-columns:1fr}}
+</style></head><body>
+<header><h1>🚀 منصة كيريو - QUREO</h1><p>برمجة وذكاء اصطناعي | أولى ثانوي</p></header>
+<div class="wrap">
+<div id="login" class="card"><h2>تسجيل الدخول</h2>
+<input id="name" placeholder="اسم الطالب - مثال: أحمد"><input id="code" placeholder="كود الطالب">
+<select><option>أولى ثانوي عام</option><option>بكالوريا</option></select>
+<button onclick="enter()">دخول للمنصة</button><p style="color:#666;font-size:14px">اكتب أي اسم وكود للدخول التجريبي</p></div>
+<div id="app" class="hidden">
+<div class="card"><h2 id="hi">أهلا بيك 👋</h2><p>تقدمك: <b id="prog">0%</b></p><div class="bar"><i id="bar" style="width:0%"></i></div><p>نقاطك: <b id="pts">0</b> ⭐ | دروس مكتملة: <b id="done">0</b> / 12</p></div>
+<div class="card"><h2>📚 الفصول - 12 فصل</h2><div class="grid" id="chapters"></div></div>
+<div class="card"><h2>📝 اختبار سريع</h2><div id="quiz"></div><button onclick="check()">تصحيح الاختبار</button><p id="res"></p></div>
+</div></div>
+<script>
+const lessons=[
+["1","مقدمة في البرمجة","يعني ايه برمجة؟ انك تدي أوامر للكمبيوتر خطوة خطوة."],
+["2","الخوارزميات","خطة مرتبة لحل مشكلة، زي وصفة الأكل."],
+["3","البرمجة بالكتل","بتركب كتل زي الليجو بدل ما تكتب كود صعب."],
+["4","المتغيرات","صندوق بتحفظ فيه قيمة، زي x = 5"],
+["5","الشروط If","لو الشرط صح اعمل كذا، لو غلط اعمل حاجة تانية."],
+["6","الحلقات Loops","كرر نفس الحاجة كذا مرة من غير ما تكتبها تاني."],
+["7","الدوال Functions","أمر جاهز بتناديه في أي وقت."],
+["8","القوائم Lists","مجموعة حاجات مترتبة في مكان واحد."],
+["9","مقدمة ذكاء اصطناعي","كمبيوتر بيتعلم وياخد قرارات زي الإنسان."],
+["10","تعلم الآلة","الكمبيوتر بيتعلم من الأمثلة مش من الأوامر."],
+["11","الرؤية الحاسوبية","الكمبيوتر بيشوف الصور ويفهمها."],
+["12","مشروع التخرج","اعمل لعبة أو تطبيق صغير باللي اتعلمته."]];
+let done=new Set(),pts=0;
+function enter(){let n=document.getElementById('name').value||'طالبنا البطل';document.getElementById('hi').innerText='أهلا بيك يا '+n+' 👋';document.getElementById('login').classList.add('hidden');document.getElementById('app').classList.remove('hidden');render();}
+function render(){document.getElementById('chapters').innerHTML=lessons.map((l,i)=>`<div class="ch" onclick="openL(${i})"><b>${l[0]} - ${l[1]}</b><p>${l[2]}</p><span>${done.has(i)?'✅ مكتمل - اضغط للمراجعة':'▶️ اضغط للبدء'}</span></div>`).join('');}
+function openL(i){alert(lessons[i][1]+'\n\n'+lessons[i][2]+'\n\nمثال:\nprint("أهلا بيك في كيريو")');if(!done.has(i)){done.add(i);pts+=10;}document.getElementById('done').innerText=done.size;document.getElementById('pts').innerText=pts;let p=Math.round(done.size/12*100);document.getElementById('prog').innerText=p+'%';document.getElementById('bar').style.width=p+'%';render();}
+const qs=[{q:'المتغير بيستخدم ليه؟',o:['نحفظ فيه قيمة','نرسم صورة','نطفي الجهاز'],a:0},{q:'لو عايز تكرر حاجة 10 مرات تستخدم؟',o:['If','Loop / حلقة','Print بس'],a:1},{q:'الذكاء الاصطناعي هو؟',o:['كمبيوتر بيتعلم وياخد قرارات','كمبيوتر بيطفي لوحده','آلة حاسبة بس'],a:0}];
+let ans=[-1,-1,-1];
+document.getElementById('quiz').innerHTML=qs.map((x,i)=>`<div class="q"><b>${i+1}- ${x.q}</b>${x.o.map((o,j)=>`<label class="opt"><input type="radio" name="q${i}" onclick="ans[${i}]=${j}"> ${o}</label>`).join('')}</div>`).join('');
+function check(){let s=0;ans.forEach((a,i)=>{if(a===qs[i].a)s++});document.getElementById('res').innerHTML='درجتك: '+s+' / 3 '+(s===3?'🎉 ممتاز!':'💪 كمل وحاول تاني');}
+</script></body></html>
